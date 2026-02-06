@@ -1,0 +1,397 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>IB Waves (SL) — Standing Waves (EN→JP then EN→EN)</title>
+  <style>
+    :root{
+      --bg:#0b1020; --card:#121a33; --muted:#aab3d6; --text:#eef1ff;
+      --accent:#7aa2ff; --good:#42d392; --bad:#ff6b6b; --line:#26325c;
+    }
+    body{ margin:0; font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; background:linear-gradient(180deg,#070b16, #0b1020 55%, #070b16); color:var(--text);}
+    header{ max-width:980px; margin:0 auto; padding:28px 18px 10px; }
+    h1{ font-size:1.25rem; margin:0 0 6px; letter-spacing:.2px;}
+    p{ margin:8px 0; color:var(--muted); line-height:1.45;}
+    main{ max-width:980px; margin:0 auto; padding:10px 18px 42px; }
+    .grid{ display:grid; grid-template-columns: 1fr; gap:14px; }
+    @media (min-width: 900px){ .grid{ grid-template-columns: 1fr 1fr; } }
+
+    .card{
+      background: rgba(18,26,51,.92);
+      border: 1px solid rgba(38,50,92,.75);
+      border-radius: 16px;
+      padding: 16px 16px 14px;
+      box-shadow: 0 10px 30px rgba(0,0,0,.25);
+      overflow:hidden;
+    }
+    .tag{ display:inline-flex; gap:8px; align-items:center; font-size:.78rem; color:var(--muted); }
+    .dot{ width:8px; height:8px; border-radius:50%; background:var(--accent); display:inline-block; }
+    .q{ margin:8px 0 10px; font-size:1rem; color:var(--text); }
+    .story{ margin-top:10px; padding:12px 12px; border-radius:12px; border:1px dashed rgba(122,162,255,.35); color:var(--muted);}
+    .btnrow{ display:flex; gap:10px; flex-wrap:wrap; margin-top:10px; }
+    button{
+      appearance:none; border:1px solid rgba(122,162,255,.35);
+      background: rgba(122,162,255,.12);
+      color: var(--text); padding:9px 12px; border-radius: 12px;
+      cursor:pointer; font-weight:600; font-size:.9rem;
+      transition: transform .04s ease, background .12s ease;
+    }
+    button:hover{ background: rgba(122,162,255,.18); }
+    button:active{ transform: translateY(1px); }
+    button[disabled]{ opacity:.45; cursor:not-allowed; }
+
+    .reveal{
+      margin-top:10px; padding:12px 12px; border-radius:12px;
+      border:1px solid rgba(38,50,92,.75);
+      background: rgba(7,11,22,.55);
+      display:none;
+    }
+    .reveal h3{ margin:0 0 6px; font-size:.95rem; }
+    .reveal .jp{ color:#d7dcff; }
+    .reveal .en{ color:var(--text); }
+    .math{ font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace; color:#e6e9ff; }
+    .hr{ height:1px; background: rgba(38,50,92,.75); margin:14px 0 6px; }
+    .source{ margin-top:8px; font-size:.82rem; color:var(--muted); }
+
+    .exercise{ margin-top:10px; padding:12px; border-radius:12px; border:1px solid rgba(66,211,146,.25); background: rgba(66,211,146,.05); }
+    .exercise h4{ margin:0 0 8px; font-size:.95rem; }
+    .row{ display:flex; gap:10px; flex-wrap:wrap; align-items:center; }
+    input[type="text"]{
+      background: rgba(7,11,22,.55);
+      border: 1px solid rgba(38,50,92,.9);
+      color: var(--text);
+      padding: 9px 10px;
+      border-radius: 10px;
+      min-width: 200px;
+      font-size: .95rem;
+      outline:none;
+    }
+    .feedback{ margin-top:8px; font-weight:700; display:none; }
+    .good{ color: var(--good); }
+    .bad{ color: var(--bad); }
+    footer{ max-width:980px; margin:0 auto; padding:10px 18px 30px; color:var(--muted); font-size:.9rem; }
+    .mini{ font-size:.88rem; }
+    .pill{ display:inline-block; padding:4px 8px; border-radius:999px; border:1px solid rgba(38,50,92,.75); background: rgba(122,162,255,.08); color: var(--muted); }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Standing Waves — Interactive Q&A Reveal</h1>
+    <p>
+      Same rules: reveal <span class="pill">English → Japanese</span> first, then unlock
+      <span class="pill">English → English</span>.
+    </p>
+    <p class="mini">
+      Narrative thread: you’re in the lab. A string is driven by a vibrator (Melde-style), a tube dips into water,
+      and your student keeps asking, “Why do some waves look like they’re standing still?”
+    </p>
+  </header>
+
+  <main>
+    <div class="card">
+      <div class="tag"><span class="dot"></span><strong>Prelude</strong> • the “standing” illusion</div>
+      <div class="story">
+        A traveling wave goes right. It reflects and comes back left.
+        If those two waves are (nearly) identical, their superposition can create a pattern that
+        <em>doesn’t move</em>: nodes stay put, antinodes stay put.
+        <div class="hr"></div>
+        Anchor ideas:
+        <div class="math">Standing wave = superposition of two identical waves traveling in opposite directions</div>
+        <div class="source">Source: formation steps and node/antinode definitions. :contentReference[oaicite:0]{index=0} :contentReference[oaicite:1]{index=1}</div>
+      </div>
+    </div>
+
+    <div class="grid" id="qa"></div>
+
+    <div class="card">
+      <div class="tag"><span class="dot"></span><strong>Boss Level</strong> • resonance tube (speed of sound)</div>
+      <div class="q">
+        A 256 Hz tuning fork is used with a resonance tube in water. The first two resonances of the fundamental are at
+        L₁ = 0.32 m and L₂ = 0.98 m. Estimate the speed of sound.
+      </div>
+
+      <div class="exercise">
+        <h4>Check your answer</h4>
+        <div class="row">
+          <label class="mini">v (m/s) =</label>
+          <input id="boss_v" type="text" placeholder="e.g. 338" />
+          <button onclick="checkBoss()">Check</button>
+        </div>
+        <div id="boss_fb" class="feedback"></div>
+        <div class="mini" style="margin-top:10px;color:var(--muted);">
+          Hint: for a tube closed at one end, consecutive resonances differ by <span class="math">½λ</span>.
+          So <span class="math">L₂ − L₁ = ½λ</span>, then use <span class="math">v = fλ</span>.
+        </div>
+      </div>
+
+      <div class="btnrow">
+        <button onclick="revealBossJP()">Reveal EN→JP</button>
+        <button id="boss_en_btn" onclick="revealBossEN()" disabled>Reveal EN→EN</button>
+      </div>
+
+      <div id="boss_jp" class="reveal">
+        <h3 class="jp">English → Japanese</h3>
+        <div class="jp">
+          水の共鳴管（片方が閉端）では、連続する共鳴の差は <span class="math">½λ</span>。<br/>
+          <span class="math">L₂ − L₁ = 0.98 − 0.32 = 0.66 m = ½λ</span> だから <span class="math">λ = 1.32 m</span>。<br/>
+          <span class="math">v = fλ = 256 × 1.32 ≈ 338 m/s</span>。<br/>
+          <span class="source">Source example and method. :contentReference[oaicite:2]{index=2}</span>
+        </div>
+      </div>
+
+      <div id="boss_en" class="reveal">
+        <h3 class="en">English → English</h3>
+        <div class="en">
+          For a tube closed at one end, consecutive resonance lengths differ by <span class="math">½λ</span>.
+          So <span class="math">L₂ − L₁ = 0.66 m = ½λ</span> ⇒ <span class="math">λ = 1.32 m</span>.
+          Then <span class="math">v = fλ = 256 × 1.32 ≈ 338 m/s</span>. :contentReference[oaicite:3]{index=3}
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <div class="mini">
+      Notes: “fundamental” = 1st harmonic; “overtones” are the higher natural modes above the fundamental
+      (like extra “voices” layered above the main note).
+    </div>
+  </footer>
+
+  <script>
+    // Cards (Q + EN→JP + EN→EN + exercises)
+    const cards = [
+      {
+        tag: "Formation",
+        title: "How standing waves form (superposition story)",
+        q: `A traveling wave reaches the end of a string and reflects. Explain how the incident + reflected waves can produce a standing wave.`,
+        jp: `定在波は「同じ周波数・同じ波長（ほぼ同じ振幅）」の2つの波が逆向きに進んで重ね合わさることでできます。<br/>
+             典型例：右向きに進む波が端で反射 → 左向きの反射波が戻る → 2つの波が干渉して、節と腹が固定されたパターンになる。<br/>
+             <div class="source">Source: formation steps and “superposition at any point”. :contentReference[oaicite:4]{index=4} :contentReference[oaicite:5]{index=5}</div>`,
+        en: `Standing waves form when two nearly identical waves travel in opposite directions and superpose.
+             A common mechanism: a right-traveling wave reflects at the end, producing a left-traveling wave with
+             the same frequency and wavelength; their interference creates fixed nodes and antinodes (a pattern that
+             does not move along the medium). :contentReference[oaicite:6]{index=6} :contentReference[oaicite:7]{index=7}`
+      },
+      {
+        tag: "Key points",
+        title: "Nodes, antinodes, and what “in phase” means here",
+        q: `Define node and antinode. Then state what happens to phase between adjacent segments of a standing wave.`,
+        jp: `節（node）：常に完全な破壊的干渉 → 変位0の点。<br/>
+             腹（antinode）：最大の建設的干渉 → 振幅最大の点。<br/>
+             さらに：節と節の間の同じ区間では点は同位相で動くが、隣の区間とは180°（π）ずれて動く。<br/>
+             <div class="source">Source: node/antinode definitions + phase behaviour by segments. :contentReference[oaicite:8]{index=8}</div>`,
+        en: `A node is a point of constant complete destructive interference (zero displacement).
+             An antinode is a point of maximum constructive interference (maximum displacement).
+             In a standing wave, all points between two consecutive nodes move in phase, while the next segment
+             is 180° out of phase with it. :contentReference[oaicite:9]{index=9}`
+      },
+      {
+        tag: "Reflection",
+        title: "Fixed end vs free end reflection (phase flip or not)",
+        q: `A pulse reflects at a fixed end and at a free end. What happens to the phase in each case, and why?`,
+        jp: `固定端反射（ハード反射）：位相がπ（180°）反転する。<br/>
+             理由：ロープが支点を押す→作用反作用で支点がロープに逆向きの力を与えるため、上下が反転した反射波になる。<br/>
+             自由端反射（ソフト反射）：位相差0（反転しない）。<br/>
+             <div class="source">Source: fixed/free end reflection phase difference and Newton’s 3rd law explanation. :contentReference[oaicite:10]{index=10}</div>`,
+        en: `At a fixed end, the reflected pulse is inverted (phase difference π / 180°) because the support exerts an
+             equal and opposite force on the string (Newton’s 3rd law), flipping the displacement.
+             At a free end, the reflection is not inverted (phase difference 0). :contentReference[oaicite:11]{index=11}`
+      },
+      {
+        tag: "Harmonics",
+        title: "Strings fixed at both ends: fundamental + overtones",
+        q: `A string is fixed at both ends. What are the boundary conditions, and how do harmonic frequencies relate to the fundamental?`,
+        jp: `両端固定 → 両端は節（node）。<br/>
+             基本振動（1st harmonic / fundamental）では <span class="math">L = ½λ₁</span> → <span class="math">f₁ = v/(2L)</span>。<br/>
+             n次の自然振動は <span class="math">fₙ = n f₁</span>（n=1,2,3,...）。<br/>
+             「倍音（overtones）」は基本振動より上のモード（例：2nd harmonic=1st overtone）。<br/>
+             <div class="source">Source: boundary conditions and fₙ = n f₁ for string fixed at both ends. :contentReference[oaicite:12]{index=12}</div>`,
+        en: `Fixed ends impose nodes at both ends. The fundamental has L = ½λ₁, giving f₁ = v/(2L).
+             Higher harmonics are integer multiples: fₙ = n f₁ for n = 1,2,3,... .
+             Overtones are the modes above the fundamental (e.g., 2nd harmonic is the 1st overtone). :contentReference[oaicite:13]{index=13}`
+      },
+      {
+        tag: "Harmonics",
+        title: "Tubes: open-open vs closed-open",
+        q: `Compare the allowed harmonics in a tube open at both ends vs closed at one end.`,
+        jp: `両端開管：両端が腹（antinode）。基本は <span class="math">L = ½λ₁</span> → <span class="math">f₁ = v/(2L)</span>。n次は <span class="math">fₙ = n f₁</span>。<br/>
+             片端閉管：閉端が節、開端が腹。基本は <span class="math">L = ¼λ₁</span> → <span class="math">f₁ = v/(4L)</span>。許されるのは主に奇数次（1,3,5,...）。<br/>
+             <div class="source">Source: tube boundary conditions + mode patterns. :contentReference[oaicite:14]{index=14} :contentReference[oaicite:15]{index=15}</div>`,
+        en: `Open-open: antinodes at both ends; fundamental L = ½λ₁ so f₁ = v/(2L), and all integer harmonics occur.
+             Closed-open: node at the closed end and antinode at the open end; fundamental L = ¼λ₁ so f₁ = v/(4L),
+             and the allowed modes are the odd harmonics (1,3,5,...). :contentReference[oaicite:16]{index=16} :contentReference[oaicite:17]{index=17}`
+      },
+      {
+        tag: "Material / speed",
+        title: "Melde’s experiment idea: wave speed depends on the system",
+        q: `In a driven-string experiment (Melde-style), what controls the wave speed on the string—and how does that affect the harmonics you observe?`,
+        jp: `メルデの実験（振動子で糸を振動させて定在波を作る）では、波の速さは糸の性質と張力で決まります。<br/>
+             速さが変わると、同じ長さ L で成立する <span class="math">fₙ</span>（共鳴条件）が変わるので、見える腹の数（モード）が変わります。<br/>
+             ここでの本質：<span class="math">v = fλ</span> で、境界条件が λ を制限し、v が材料/張力側で決まるから、結果として f が決まる。<br/>
+             <div class="source">Wave speed relation used throughout. :contentReference[oaicite:18]{index=18}</div>`,
+        en: `In a Melde-type driven string, the wave speed is set by the string system (commonly tension and mass-per-length),
+             so changing the “material side” changes v. Since standing waves require specific wavelengths (set by boundary conditions),
+             and v = fλ, changing v shifts which driving frequencies produce resonance—and therefore which harmonic pattern (how many loops/antinodes)
+             you observe. :contentReference[oaicite:19]{index=19}`
+      }
+    ];
+
+    // Exercises attached to specific titles
+    const exercises = [
+      {
+        attachToTitle: "Strings fixed at both ends: fundamental + overtones",
+        prompt: `Exercise: A string has length L = 0.60 m and wave speed v = 120 m/s. Find the fundamental frequency f₁.`,
+        inputs: [{ id:"ex_f1", label:"f₁ (Hz)", placeholder:"e.g. 100" }],
+        checker: (vals) => {
+          const x = parseFloat(vals.ex_f1);
+          if (Number.isNaN(x)) return { ok:false, msg:"Enter a number." };
+          const target = 120/(2*0.60); // 100
+          const ok = Math.abs(x - target) < 2;
+          return { ok, msg: ok ? "Correct: f₁ = v/(2L) = 100 Hz." : "Try f₁ = v/(2L) = 120/(1.2) = 100 Hz." };
+        }
+      },
+      {
+        attachToTitle: "Tubes: open-open vs closed-open",
+        prompt: `Exercise: A tube of length L = 0.85 m is closed at one end. If v = 340 m/s, estimate f₁.`,
+        inputs: [{ id:"ex_pipe_f1", label:"f₁ (Hz)", placeholder:"e.g. 100" }],
+        checker: (vals) => {
+          const x = parseFloat(vals.ex_pipe_f1);
+          if (Number.isNaN(x)) return { ok:false, msg:"Enter a number." };
+          const target = 340/(4*0.85); // 100
+          const ok = Math.abs(x - target) < 2.5;
+          return { ok, msg: ok ? "Nice: f₁ ≈ v/(4L) ≈ 100 Hz." : "Use closed-end fundamental: f₁ = v/(4L) = 340/(3.4) = 100 Hz." };
+        }
+      },
+      {
+        attachToTitle: "Fixed end vs free end reflection (phase flip or not)",
+        prompt: `Quick check: which reflection gives a phase change of π? Type: "fixed" or "free".`,
+        inputs: [{ id:"ex_reflect", label:"Answer", placeholder:"fixed / free" }],
+        checker: (vals) => {
+          const s = (vals.ex_reflect||"").trim().toLowerCase();
+          const ok = s.startsWith("fix");
+          return { ok, msg: ok ? "Correct: fixed end reflection flips phase by π." : "It’s the fixed end that causes a π phase flip." };
+        }
+      }
+    ];
+
+    function el(tag, attrs={}, children=[]){
+      const node = document.createElement(tag);
+      Object.entries(attrs).forEach(([k,v]) => {
+        if (k === "class") node.className = v;
+        else node.setAttribute(k, v);
+      });
+      (Array.isArray(children) ? children : [children]).forEach(ch => {
+        if (ch === null || ch === undefined) return;
+        if (typeof ch === "string") node.appendChild(document.createTextNode(ch));
+        else node.appendChild(ch);
+      });
+      return node;
+    }
+
+    function buildCard(i, item){
+      const id = `card_${i}`;
+      const jpId = `${id}_jp`;
+      const enId = `${id}_en`;
+      const btnJP = `${id}_btn_jp`;
+      const btnEN = `${id}_btn_en`;
+
+      const card = el("div",{class:"card"});
+      card.appendChild(el("div",{class:"tag"},[
+        el("span",{class:"dot"}), el("strong",{}, item.tag), document.createTextNode(" • " + item.title)
+      ]));
+      card.appendChild(el("div",{class:"q"}, item.q));
+
+      const ex = exercises.find(e => e.attachToTitle === item.title);
+      if (ex){
+        const exWrap = el("div",{class:"exercise"});
+        exWrap.appendChild(el("h4",{}, "Mathing exercise"));
+        exWrap.appendChild(el("div",{class:"mini", style:"color:var(--muted);"}, ex.prompt));
+
+        const row = el("div",{class:"row", style:"margin-top:10px;"});
+        ex.inputs.forEach(inp => {
+          row.appendChild(el("label",{class:"mini", for:inp.id}, inp.label));
+          row.appendChild(el("input",{id:inp.id, type:"text", placeholder: inp.placeholder || ""}));
+        });
+        const fbId = `${id}_fb`;
+        const btn = el("button",{}, "Check");
+        row.appendChild(btn);
+        exWrap.appendChild(row);
+        const fb = el("div",{id:fbId, class:"feedback"});
+        exWrap.appendChild(fb);
+
+        btn.addEventListener("click", () => {
+          const values = {};
+          ex.inputs.forEach(inp => values[inp.id] = document.getElementById(inp.id).value);
+          const res = ex.checker(values);
+          fb.style.display = "block";
+          fb.className = "feedback " + (res.ok ? "good" : "bad");
+          fb.textContent = res.msg;
+        });
+
+        card.appendChild(exWrap);
+      }
+
+      const btnrow = el("div",{class:"btnrow"});
+      const bjp = el("button",{id:btnJP}, "Reveal EN→JP");
+      const ben = el("button",{id:btnEN, disabled:true}, "Reveal EN→EN");
+      btnrow.appendChild(bjp);
+      btnrow.appendChild(ben);
+      card.appendChild(btnrow);
+
+      const jp = el("div",{id:jpId, class:"reveal"});
+      jp.appendChild(el("h3",{class:"jp"}, "English → Japanese"));
+      const jpBody = el("div",{class:"jp"});
+      jpBody.innerHTML = item.jp;
+      jp.appendChild(jpBody);
+
+      const en = el("div",{id:enId, class:"reveal"});
+      en.appendChild(el("h3",{class:"en"}, "English → English"));
+      const enBody = el("div",{class:"en"});
+      enBody.innerHTML = item.en;
+      en.appendChild(enBody);
+
+      card.appendChild(jp);
+      card.appendChild(en);
+
+      bjp.addEventListener("click", () => { jp.style.display = "block"; ben.disabled = false; });
+      ben.addEventListener("click", () => { en.style.display = "block"; });
+
+      return card;
+    }
+
+    // Build grid
+    const qa = document.getElementById("qa");
+    cards.forEach((item, i) => qa.appendChild(buildCard(i, item)));
+
+    // Boss
+    function revealBossJP(){
+      document.getElementById("boss_jp").style.display = "block";
+      document.getElementById("boss_en_btn").disabled = false;
+    }
+    function revealBossEN(){
+      document.getElementById("boss_en").style.display = "block";
+    }
+    function checkBoss(){
+      const x = parseFloat(document.getElementById("boss_v").value);
+      const fb = document.getElementById("boss_fb");
+      fb.style.display = "block";
+      if (Number.isNaN(x)){
+        fb.className = "feedback bad";
+        fb.textContent = "Enter a number for v.";
+        return;
+      }
+      const target = 338; // from source example
+      const ok = Math.abs(x - target) < 8;
+      fb.className = "feedback " + (ok ? "good" : "bad");
+      fb.textContent = ok
+        ? "Correct (within rounding): about 338 m/s."
+        : "Try: L2-L1=0.66=½λ ⇒ λ=1.32 m ⇒ v=fλ=256×1.32≈338 m/s.";
+    }
+
+    window.revealBossJP = revealBossJP;
+    window.revealBossEN = revealBossEN;
+    window.checkBoss = checkBoss;
+  </script>
+</body>
+</html>
